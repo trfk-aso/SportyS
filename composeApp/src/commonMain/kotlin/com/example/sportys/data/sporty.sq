@@ -1,0 +1,175 @@
+CREATE TABLE articles (
+    id TEXT NOT NULL PRIMARY KEY,
+    title TEXT NOT NULL,
+    summary TEXT,
+    content TEXT,
+    image_url TEXT,
+    published_at TEXT NOT NULL,
+    source TEXT,
+    tags_json TEXT NOT NULL
+);
+
+selectAllArticles:
+SELECT * FROM articles
+ORDER BY published_at DESC;
+
+selectArticleById:
+SELECT * FROM articles
+WHERE id = ?;
+
+insertArticle:
+INSERT OR REPLACE INTO articles(
+    id, title, summary, content, image_url, published_at, source, tags_json
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteAllArticles:
+DELETE FROM articles;
+
+CREATE TABLE matches (
+    id TEXT NOT NULL PRIMARY KEY,
+    home_team_id TEXT NOT NULL,
+    home_team_name TEXT NOT NULL,
+    home_team_logo TEXT,
+
+    away_team_id TEXT NOT NULL,
+    away_team_name TEXT NOT NULL,
+    away_team_logo TEXT,
+
+    league_id TEXT NOT NULL,
+    league_name TEXT NOT NULL,
+    league_country TEXT,
+
+    status TEXT NOT NULL,
+
+    start_time TEXT NOT NULL,
+
+    score_home INTEGER,
+    score_away INTEGER
+);
+
+selectMatchesForDay:
+SELECT * FROM matches
+WHERE date(start_time) = date(?)
+ORDER BY start_time;
+
+selectMatchById:
+SELECT * FROM matches
+WHERE id = ?;
+
+insertMatch:
+INSERT OR REPLACE INTO matches(
+    id,
+    home_team_id, home_team_name, home_team_logo,
+    away_team_id, away_team_name, away_team_logo,
+    league_id, league_name, league_country,
+    status, start_time,
+    score_home, score_away
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteAllMatches:
+DELETE FROM matches;
+
+CREATE TABLE teams (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    logo_url TEXT,
+    league_id TEXT,
+    league_name TEXT,
+    position INTEGER
+);
+
+selectAllTeams:
+SELECT * FROM teams
+ORDER BY name;
+
+selectTeamById:
+SELECT * FROM teams
+WHERE id = ?;
+
+insertTeam:
+INSERT OR REPLACE INTO teams(
+    id, name, logo_url, league_id, league_name, position
+) VALUES (?, ?, ?, ?, ?, ?);
+
+
+CREATE TABLE leagues (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    country TEXT,
+    logo_url TEXT
+);
+
+selectAllLeagues:
+SELECT * FROM leagues
+ORDER BY name;
+
+selectLeagueById:
+SELECT * FROM leagues
+WHERE id = ?;
+
+insertLeague:
+INSERT OR REPLACE INTO leagues(
+    id, name, country, logo_url
+) VALUES (?, ?, ?, ?);
+
+CREATE TABLE favorites (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    type TEXT NOT NULL,
+    item_id TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+selectFavoritesByType:
+SELECT * FROM favorites
+WHERE type = ?
+ORDER BY datetime(created_at) DESC;
+
+selectFavoriteByTypeAndItem:
+SELECT * FROM favorites
+WHERE type = ? AND item_id = ?
+LIMIT 1;
+
+insertFavorite:
+INSERT INTO favorites(type, item_id, created_at)
+VALUES (?, ?, ?);
+
+deleteFavorite:
+DELETE FROM favorites
+WHERE type = ? AND item_id = ?;
+
+deleteAllFavorites:
+DELETE FROM favorites;
+
+selectAllFavorites:
+SELECT * FROM favorites
+ORDER BY datetime(created_at) DESC;
+
+CREATE TABLE user_preferences (
+    id INTEGER NOT NULL PRIMARY KEY DEFAULT 0,
+    favorite_league_ids TEXT NOT NULL,
+    favorite_team_ids TEXT NOT NULL,
+    is_dark_theme_enabled INTEGER NOT NULL,
+    is_dark_theme_purchased INTEGER NOT NULL,
+    is_data_reset_purchased INTEGER NOT NULL,
+    language TEXT,
+    primary_country TEXT
+);
+
+selectUserPreferences:
+SELECT * FROM user_preferences
+WHERE id = 0
+LIMIT 1;
+
+insertOrUpdateUserPreferences:
+INSERT OR REPLACE INTO user_preferences(
+    id,
+    favorite_league_ids,
+    favorite_team_ids,
+    is_dark_theme_enabled,
+    is_dark_theme_purchased,
+    is_data_reset_purchased,
+    language,
+    primary_country
+) VALUES (
+    0, ?, ?, ?, ?, ?, ?, ?
+);
