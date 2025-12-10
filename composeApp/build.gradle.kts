@@ -1,5 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -119,4 +120,19 @@ sqldelight {
 dependencies {
     debugImplementation(compose.uiTooling)
 }
+
+tasks.register("packForXcode", Sync::class) {
+    val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
+    val framework = kotlin.targets
+        .filterIsInstance<KotlinNativeTarget>()
+        .firstOrNull { it.konanTarget.family.isAppleFamily }
+        ?.binaries
+        ?.getFramework(mode)
+
+    dependsOn(framework?.linkTask)
+    val targetDir = File(buildDir, "xcode-frameworks")
+    from({ framework?.outputDirectory })
+    into(targetDir)
+}
+
 
