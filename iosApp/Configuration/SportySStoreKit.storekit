@@ -1,0 +1,87 @@
+{
+  "identifier" : "SportySStoreKit",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "29.99",
+      "familyShareable" : false,
+      "internalID" : "theme_dark",
+      "localizations" : [
+        {
+          "description" : "Unlock the premium dark theme for a better visual experience.",
+          "displayName" : "Premium Dark Theme",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "theme_dark",
+      "referenceName" : "Premium Dark Theme",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "14.99",
+      "familyShareable" : false,
+      "internalID" : "reset_data",
+      "localizations" : [
+        {
+          "description" : "Securely wipe all app data, favorites and history. Start completely fresh.",
+          "displayName" : "Reset App Data",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "reset_data",
+      "referenceName" : "Reset App Data",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

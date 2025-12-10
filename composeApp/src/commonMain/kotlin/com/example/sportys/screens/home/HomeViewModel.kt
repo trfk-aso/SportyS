@@ -20,6 +20,9 @@ class HomeViewModel(
 
     init {
         refreshAll()
+        viewModelScope.launch {
+            repo.refreshLeagues()
+        }
     }
 
     fun refreshAll() {

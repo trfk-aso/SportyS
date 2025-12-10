@@ -1,5 +1,7 @@
 package com.example.sportys.di
 
+import com.example.sportys.repository.FeatureRepository
+import com.example.sportys.repository.FeatureRepositoryImpl
 import com.example.sportys.repository.FootballApi
 import com.example.sportys.repository.FootballApiImpl
 import com.example.sportys.repository.FootballDbMapper
@@ -7,6 +9,8 @@ import com.example.sportys.repository.FootballRepository
 import com.example.sportys.repository.FootballRepositoryImpl
 import com.example.sportys.repository.SettingsRepository
 import com.example.sportys.repository.SettingsRepositoryImpl
+import com.example.sportys.repository.ThemeRepository
+import com.example.sportys.repository.ThemeRepositoryImpl
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
@@ -22,8 +26,8 @@ val repositoryModule = module {
         }
     }}
 
-    single(named("NEWS_API_KEY")) { "5a46be92a32325e5fee2548bbc2694fc" }
-    single(named("FOOTBALL_API_KEY")) { "31933c157a28a9ba52cfd6a6a4787f92" }
+    single(named("NEWS_API_KEY")) { "bfaa2639da53b2b7f671942330dc7c41" }
+    single(named("FOOTBALL_API_KEY")) { "c248e8c2f602e83f9da56759ca225d2a" }
 
     single { FootballDbMapper() }
 
@@ -37,4 +41,6 @@ val repositoryModule = module {
 
     single<FootballRepository> { FootballRepositoryImpl(get(), get(), get()) }
     single<SettingsRepository> { SettingsRepositoryImpl(get()) }
+    single<ThemeRepository> { ThemeRepositoryImpl(get()) }
+    single<FeatureRepository> { FeatureRepositoryImpl(get()) }
 }

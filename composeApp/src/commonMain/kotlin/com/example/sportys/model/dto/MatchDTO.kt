@@ -53,3 +53,20 @@ data class LeagueShortDTO(
     val country: String? = null,
     val logo: String? = null
 )
+
+@Serializable
+data class PlayersResponse(
+    val response: List<PlayerWrapper>
+)
+
+@Serializable
+data class PlayerWrapper(
+    val player: PlayerPhotoDTO
+)
+
+@Serializable
+data class PlayerPhotoDTO(
+    val id: Int,
+    val name: String,
+    val photo: String?
+)

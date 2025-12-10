@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		398E3B1C2EE0B31500187BA5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 398E3B1B2EE0B30C00187BA5 /* libsqlite3.tbd */; };
+		39F473432EE9A9C300F8074A /* AppsFlyerLib-Static in Frameworks */ = {isa = PBXBuildFile; productRef = 39F473422EE9A9C300F8074A /* AppsFlyerLib-Static */; };
+		39F4734A2EE9B06C00F8074A /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 39F473492EE9B06C00F8074A /* FirebaseCore */; };
+		39F4734C2EE9B06C00F8074A /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 39F4734B2EE9B06C00F8074A /* FirebaseMessaging */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,7 +49,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39F4734C2EE9B06C00F8074A /* FirebaseMessaging in Frameworks */,
 				398E3B1C2EE0B31500187BA5 /* libsqlite3.tbd in Frameworks */,
+				39F4734A2EE9B06C00F8074A /* FirebaseCore in Frameworks */,
+				39F473432EE9A9C300F8074A /* AppsFlyerLib-Static in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +106,9 @@
 			);
 			name = iosApp;
 			packageProductDependencies = (
+				39F473422EE9A9C300F8074A /* AppsFlyerLib-Static */,
+				39F473492EE9B06C00F8074A /* FirebaseCore */,
+				39F4734B2EE9B06C00F8074A /* FirebaseMessaging */,
 			);
 			productName = iosApp;
 			productReference = C363D86F6F598A9212EDF447 /* SportyS.app */;
@@ -129,6 +138,10 @@
 			);
 			mainGroup = 2211500BF5937191B46732DA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				39F473412EE9A9C300F8074A /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Static" */,
+				39F473482EE9B06C00F8074A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 117A31187ED5B703DDA8C662 /* Products */;
 			projectDirPath = "";
@@ -191,10 +204,11 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "${TEAM_ID}";
+				DEVELOPMENT_TEAM = N4QG4UZ8U9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This data will be used to provide more relevant content and improve your experience.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -204,6 +218,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sportyspo.app;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -346,10 +361,11 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"iosApp/Preview Content\"";
-				DEVELOPMENT_TEAM = "${TEAM_ID}";
+				DEVELOPMENT_TEAM = N4QG4UZ8U9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iosApp/Info.plist;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This data will be used to provide more relevant content and improve your experience.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -359,6 +375,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sportyspo.app;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -391,6 +408,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		39F473412EE9A9C300F8074A /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Static" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppsFlyerSDK/AppsFlyerFramework-Static";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.17.8;
+			};
+		};
+		39F473482EE9B06C00F8074A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		39F473422EE9A9C300F8074A /* AppsFlyerLib-Static */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39F473412EE9A9C300F8074A /* XCRemoteSwiftPackageReference "AppsFlyerFramework-Static" */;
+			productName = "AppsFlyerLib-Static";
+		};
+		39F473492EE9B06C00F8074A /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39F473482EE9B06C00F8074A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		39F4734B2EE9B06C00F8074A /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 39F473482EE9B06C00F8074A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5BA6FA729FEAC0A4C4C25AD0 /* Project object */;
 }

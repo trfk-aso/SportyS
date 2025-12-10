@@ -3,6 +3,7 @@ package com.example.sportys.screens.onboarding
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,10 +34,12 @@ fun OnboardingScreen(navController: NavHostController) {
         Res.drawable.onboarding_slide2,
         Res.drawable.onboarding_slide3
     )
+
     val pagerState = rememberPagerState(initialPage = 0) { pages.size }
     val scope = rememberCoroutineScope()
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+
         HorizontalPager(state = pagerState) { page ->
             Image(
                 painter = painterResource(pages[page]),
@@ -51,7 +54,10 @@ fun OnboardingScreen(navController: NavHostController) {
             contentDescription = "Skip",
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(top = 90.dp, end = 2.dp)
+                .padding(
+                    top = if (maxHeight < 700.dp) 50.dp else 90.dp,
+                    end = 2.dp
+                )
                 .size(width = 115.dp, height = 40.dp)
                 .clickable {
                     navController.navigate(Screen.Home.route) {
@@ -61,19 +67,17 @@ fun OnboardingScreen(navController: NavHostController) {
         )
 
         val isLastPage = pagerState.currentPage == pages.lastIndex
+
         Image(
             painter = painterResource(
                 if (isLastPage) Res.drawable.btn_get_started
                 else Res.drawable.btn_continue
             ),
-            contentDescription = if (isLastPage) "Get Started" else "Continue",
+            contentDescription = null,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 5.dp)
-                .size(
-                    width = if (isLastPage) 350.dp else 350.dp,
-                    height = 150.dp
-                )
+                .size(width = 300.dp, height = 140.dp)
                 .clickable {
                     if (isLastPage) {
                         navController.navigate(Screen.Home.route) {

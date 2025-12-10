@@ -37,8 +37,10 @@ kotlin {
             implementation(libs.koin.androidx.compose)
             implementation("com.android.billingclient:billing-ktx:6.0.1")
             implementation("io.ktor:ktor-client-okhttp:2.3.7")
+            implementation("io.ktor:ktor-client-android:2.3.7")
         }
         commonMain.dependencies {
+            implementation("org.jsoup:jsoup:1.18.1")
             implementation("media.kamel:kamel-image:0.9.5")
             implementation("io.ktor:ktor-client-core:2.3.7")
             implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
@@ -83,7 +85,7 @@ android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.example.sportys"
+        applicationId = "com.sportyspo.app"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1

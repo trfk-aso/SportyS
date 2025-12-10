@@ -1,3 +1,5 @@
+import kotlin.Boolean;
+
 CREATE TABLE articles (
     id TEXT NOT NULL PRIMARY KEY,
     title TEXT NOT NULL,
@@ -27,6 +29,7 @@ DELETE FROM articles;
 
 CREATE TABLE matches (
     id TEXT NOT NULL PRIMARY KEY,
+
     home_team_id TEXT NOT NULL,
     home_team_name TEXT NOT NULL,
     home_team_logo TEXT,
@@ -40,16 +43,21 @@ CREATE TABLE matches (
     league_country TEXT,
 
     status TEXT NOT NULL,
-
     start_time TEXT NOT NULL,
+
+    match_date TEXT NOT NULL,
 
     score_home INTEGER,
     score_away INTEGER
 );
 
+selectAllMatches:
+SELECT * FROM matches
+ORDER BY start_time DESC;
+
 selectMatchesForDay:
 SELECT * FROM matches
-WHERE date(start_time) = date(?)
+WHERE match_date = ?
 ORDER BY start_time;
 
 selectMatchById:
@@ -62,9 +70,9 @@ INSERT OR REPLACE INTO matches(
     home_team_id, home_team_name, home_team_logo,
     away_team_id, away_team_name, away_team_logo,
     league_id, league_name, league_country,
-    status, start_time,
+    status, start_time, match_date,
     score_home, score_away
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 deleteAllMatches:
 DELETE FROM matches;
@@ -91,6 +99,9 @@ INSERT OR REPLACE INTO teams(
     id, name, logo_url, league_id, league_name, position
 ) VALUES (?, ?, ?, ?, ?, ?);
 
+selectTeamsByLeague:
+SELECT * FROM teams
+WHERE league_id = ?;
 
 CREATE TABLE leagues (
     id TEXT NOT NULL PRIMARY KEY,
@@ -152,13 +163,19 @@ CREATE TABLE user_preferences (
     is_dark_theme_purchased INTEGER NOT NULL,
     is_data_reset_purchased INTEGER NOT NULL,
     language TEXT,
-    primary_country TEXT
+    primary_country TEXT,
+    last_matches_refresh TEXT
 );
 
 selectUserPreferences:
 SELECT * FROM user_preferences
 WHERE id = 0
 LIMIT 1;
+
+updateLastMatchesRefresh:
+UPDATE user_preferences
+SET last_matches_refresh = ?1
+WHERE id = 0;
 
 insertOrUpdateUserPreferences:
 INSERT OR REPLACE INTO user_preferences(
@@ -169,7 +186,134 @@ INSERT OR REPLACE INTO user_preferences(
     is_dark_theme_purchased,
     is_data_reset_purchased,
     language,
-    primary_country
+    primary_country,
+    last_matches_refresh
 ) VALUES (
-    0, ?, ?, ?, ?, ?, ?, ?
+    0, ?, ?, ?, ?, ?, ?, ?, ?
 );
+
+CREATE TABLE history (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    type TEXT NOT NULL,
+    item_id TEXT NOT NULL,
+    opened_at TEXT NOT NULL
+);
+
+selectAllHistory:
+SELECT * FROM history
+ORDER BY datetime(opened_at) DESC;
+
+selectHistoryByType:
+SELECT * FROM history
+WHERE type = ?
+ORDER BY datetime(opened_at) DESC;
+
+insertHistory:
+INSERT INTO history(type, item_id, opened_at)
+VALUES (?, ?, ?);
+
+deleteHistoryById:
+DELETE FROM history
+WHERE id = ?;
+
+deleteAllHistory:
+DELETE FROM history;
+
+CREATE TABLE team_stats (
+    team_id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    logo_url TEXT,
+    position INTEGER NOT NULL,
+    played INTEGER NOT NULL,
+    points INTEGER NOT NULL
+);
+
+selectTeamStatsById:
+SELECT * FROM team_stats
+WHERE team_id = ?;
+
+insertTeamStats:
+INSERT OR REPLACE INTO team_stats(
+    team_id, name, logo_url, position, played, points
+) VALUES (?, ?, ?, ?, ?, ?);
+
+deleteAllTeamStats:
+DELETE FROM team_stats;
+
+CREATE TABLE Theme (
+    id          TEXT NOT NULL PRIMARY KEY,
+    name        TEXT NOT NULL,
+    is_paid     INTEGER AS Boolean DEFAULT 0,
+    purchased   INTEGER AS Boolean DEFAULT 0,
+    price       REAL
+);
+
+CREATE TABLE CurrentTheme (
+    id        INTEGER NOT NULL PRIMARY KEY DEFAULT 1,
+    theme_id  TEXT NOT NULL
+);
+
+CREATE TABLE Feature (
+    id TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    is_paid INTEGER AS Boolean DEFAULT 0,
+    purchased INTEGER AS Boolean DEFAULT 0,
+    price REAL
+);
+
+INSERT INTO Theme (id, name, is_paid, purchased, price)
+VALUES
+('theme_light', 'Light Theme', 0, 1, NULL),
+('theme_dark',  'Premium Dark Theme', 1, 0, 29.99);
+
+INSERT INTO Feature (id, name, is_paid, purchased, price)
+VALUES
+('reset_data', 'Reset App Data', 1, 0, 14.99);
+
+selectAllTheme:
+SELECT * FROM Theme;
+
+selectThemeById:
+SELECT * FROM Theme
+WHERE id = ?;
+
+countThemes:
+SELECT COUNT(*) FROM Theme;
+
+getCurrentThemeId:
+SELECT theme_id FROM CurrentTheme
+WHERE id = 1;
+
+insertTheme:
+INSERT OR REPLACE INTO Theme (
+    id, name, is_paid, purchased, price
+) VALUES (?, ?, ?, ?, ?);
+
+updatePurchased:
+UPDATE Theme
+SET purchased = 1
+WHERE id = ?;
+
+resetPurchased:
+UPDATE Theme
+SET purchased = 0
+WHERE is_paid = 1;
+
+deleteAllThemes:
+DELETE FROM Theme;
+
+upsertCurrentTheme:
+INSERT OR REPLACE INTO CurrentTheme (id, theme_id)
+VALUES (1, ?);
+
+selectAllFeature:
+SELECT * FROM Feature;
+
+updatePurchasedFeature:
+UPDATE Feature SET purchased = 1 WHERE id = ?;
+
+insertFeature:
+INSERT OR REPLACE INTO Feature (
+    id, name, is_paid, purchased, price
+)
+VALUES (?, ?, ?, ?, ?);

@@ -1,5 +1,8 @@
 package com.example.sportys.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class MatchScore(
     val home: Int,
     val away: Int

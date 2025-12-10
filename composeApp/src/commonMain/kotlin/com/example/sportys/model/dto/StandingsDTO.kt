@@ -25,10 +25,19 @@ data class StandingDTO(
     val team: StandingTeamDTO,
     val points: Int,
     val goalsDiff: Int,
+    val all: StandingAllDTO,
     val group: String? = null,
     val form: String? = null,
     val status: String? = null,
     val description: String? = null
+)
+
+@Serializable
+data class StandingAllDTO(
+    val played: Int,
+    val win: Int,
+    val draw: Int,
+    val lose: Int
 )
 
 @Serializable

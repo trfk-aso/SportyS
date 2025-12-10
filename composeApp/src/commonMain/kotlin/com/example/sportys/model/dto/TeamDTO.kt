@@ -16,8 +16,5 @@ data class TeamDataDTO(
 data class TeamDTO(
     val id: Int,
     val name: String,
-    val logo: String? = null,
-    val leagueId: Int? = null,
-    val leagueName: String? = null,
-    val position: Int? = null
+    val logo: String? = null
 )

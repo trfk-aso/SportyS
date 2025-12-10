@@ -9,13 +9,20 @@ data class LeagueResponse(
 
 @Serializable
 data class LeagueDataDTO(
-    val league: LeagueDTO
+    val league: LeagueDTO,
+    val country: CountryDTO? = null
 )
 
+@Serializable
+data class CountryDTO(
+    val name: String? = null,
+    val code: String? = null,
+    val flag: String? = null
+)
 @Serializable
 data class LeagueDTO(
     val id: Int,
     val name: String,
-    val country: String?,
-    val logo: String?
+    val type: String? = null,
+    val logo: String? = null
 )

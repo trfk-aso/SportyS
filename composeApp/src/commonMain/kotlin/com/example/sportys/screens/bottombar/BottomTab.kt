@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,12 +13,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.sportys.screens.Screen
+import com.example.sportys.screens.settings.AppTheme
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import sportys.composeapp.generated.resources.Res
@@ -79,18 +83,21 @@ val bottomTabs = listOf(
 @Composable
 fun AppBottomBar(
     currentRoute: String?,
-    onTabSelected: (String) -> Unit
+    onTabSelected: (String) -> Unit,
+    theme: AppTheme
 ) {
-    Box(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
             .height(90.dp)
-            .background(Color.White)
-            .padding(bottom = 12.dp)
     ) {
+
+        val iconSize = if (maxWidth < 380.dp) 60.dp else 70.dp
+
         Row(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(bottom = 12.dp),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -98,7 +105,8 @@ fun AppBottomBar(
                 BottomBarItem(
                     tab = tab,
                     selected = currentRoute == tab.screen.route,
-                    onClick = { onTabSelected(tab.screen.route) }
+                    onClick = { onTabSelected(tab.screen.route) },
+                    iconSize = iconSize
                 )
             }
         }
@@ -109,7 +117,8 @@ fun AppBottomBar(
 fun BottomBarItem(
     tab: BottomTab,
     selected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    iconSize: Dp
 ) {
     val iconRes = if (selected) tab.activeIcon else tab.inactiveIcon
 
@@ -122,7 +131,7 @@ fun BottomBarItem(
         Image(
             painter = painterResource(iconRes),
             contentDescription = null,
-            modifier = Modifier.size(70.dp)
+            modifier = Modifier.size(iconSize)
         )
     }
 }
