@@ -5,7 +5,7 @@
   ],
   "products" : [
     {
-      "displayPrice" : "29.99",
+      "displayPrice" : "1.99",
       "familyShareable" : false,
       "internalID" : "theme_dark",
       "localizations" : [
@@ -20,7 +20,7 @@
       "type" : "NonConsumable"
     },
     {
-      "displayPrice" : "14.99",
+      "displayPrice" : "1.99",
       "familyShareable" : false,
       "internalID" : "reset_data",
       "localizations" : [

@@ -264,11 +264,11 @@ CREATE TABLE Feature (
 INSERT INTO Theme (id, name, is_paid, purchased, price)
 VALUES
 ('theme_light', 'Light Theme', 0, 1, NULL),
-('theme_dark',  'Premium Dark Theme', 1, 0, 29.99);
+('theme_dark',  'Premium Dark Theme', 1, 0, 1.99);
 
 INSERT INTO Feature (id, name, is_paid, purchased, price)
 VALUES
-('reset_data', 'Reset App Data', 1, 0, 14.99);
+('reset_data', 'Reset App Data', 1, 0, 1.99);
 
 selectAllTheme:
 SELECT * FROM Theme;

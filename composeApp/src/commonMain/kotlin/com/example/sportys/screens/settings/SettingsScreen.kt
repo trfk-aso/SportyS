@@ -249,7 +249,7 @@ fun SettingsScreen(
                             text = if (state.isResetPurchased)
                                 "Reset app data"
                             else
-                                "Reset app data 14.99$",
+                                "Reset app data 1.99$",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -326,7 +326,7 @@ fun PremiumThemeCard(
             )
             Spacer(Modifier.height(16.dp))
             Text(
-                "29.99$",
+                "1.99$",
                 color = Color.White,
                 fontSize = 24.sp
             )

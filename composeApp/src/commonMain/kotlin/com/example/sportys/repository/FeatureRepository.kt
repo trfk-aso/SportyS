@@ -31,7 +31,7 @@ class FeatureRepositoryImpl(private val db: SportyS) : FeatureRepository {
                     name = "Reset App Data",
                     is_paid = true,
                     purchased = false,
-                    price = 14.99
+                    price = 1.99
                 )
             }
         }

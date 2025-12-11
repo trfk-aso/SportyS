@@ -44,7 +44,7 @@ class ThemeRepositoryImpl(
                     name = "Dark Premium Theme",
                     is_paid = true,
                     purchased = false,
-                    price = 29.99
+                    price = 1.99
                 )
             }
 
