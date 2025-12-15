@@ -297,7 +297,106 @@ fun SettingsScreen(
                 onCancel = { vm.showResetDialog(false) }
             )
         }
+        state.resetResult?.let { result ->
+            ResetResultDialog(
+                theme = theme,
+                result = result,
+                onDismiss = {
+                    vm.clearResetResult()
+                }
+            )
+        }
     }
+}
+
+@Composable
+fun ResetResultDialog(
+    theme: AppTheme,
+    result: ResetResult,
+    onDismiss: () -> Unit
+) {
+    val isDark = theme == AppTheme.DARK
+
+    val bg = if (isDark) Color(0xFF2B2B2B) else Color.White
+    val textColor = if (isDark) Color.White else Color.Black
+
+    val title = when (result) {
+        ResetResult.SUCCESS -> "Done"
+        ResetResult.ERROR -> "Error"
+    }
+
+    val message = when (result) {
+        ResetResult.SUCCESS -> "App data was successfully reset."
+        ResetResult.ERROR -> "Something went wrong. Please try again."
+    }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        containerColor = bg,
+        shape = RoundedCornerShape(24.dp),
+        title = {
+            Text(
+                title,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold,
+                color = textColor,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        text = {
+            Text(
+                message,
+                fontSize = 16.sp,
+                color = textColor,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        confirmButton = {
+            if (isDark) {
+                Button(
+                    onClick = onDismiss,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF1A1A1A),
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(
+                        "OK",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            } else {
+                OutlinedButton(
+                    onClick = onDismiss,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    shape = RoundedCornerShape(18.dp),
+                    border = BorderStroke(
+                        width = 1.5.dp,
+                        color = Color(0xFFD0D0D0)
+                    ),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = Color.White,
+                        contentColor = Color.Black
+                    )
+                ) {
+                    Text(
+                        "OK",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+        }
+    )
 }
 
 @Composable

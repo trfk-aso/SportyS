@@ -151,6 +151,12 @@ class SettingsViewModel(
     }
 
     private fun buyResetFeature() {
+
+        if (_state.value.isResetPurchased) {
+            showResetDialog(true)
+            return
+        }
+
         viewModelScope.launch {
             when (val result = billing.purchaseFeature("reset_data")) {
 
@@ -177,10 +183,33 @@ class SettingsViewModel(
 
     fun resetAll() {
         viewModelScope.launch {
-            repo.resetAllUserData()
-            showResetDialog(false)
-            println("🧹 App data reset!")
+            try {
+                repo.resetAllUserData()
+
+                _state.update {
+                    it.copy(
+                        showResetDialog = false,
+                        resetResult = ResetResult.SUCCESS
+                    )
+                }
+
+                println("🧹 App data reset SUCCESS")
+
+            } catch (e: Exception) {
+                _state.update {
+                    it.copy(
+                        showResetDialog = false,
+                        resetResult = ResetResult.ERROR
+                    )
+                }
+
+                println("❌ App data reset ERROR: ${e.message}")
+            }
         }
+    }
+
+    fun clearResetResult() {
+        _state.update { it.copy(resetResult = null) }
     }
 
     fun exportJson() {
@@ -246,5 +275,11 @@ data class SettingsState(
     val isPremiumThemeUnlocked: Boolean = false,
     val isResetPurchased: Boolean = false,
     val showResetDialog: Boolean = false,
-    val showPaywall: Boolean = false
+    val showPaywall: Boolean = false,
+    val resetResult: ResetResult? = null
 )
+
+enum class ResetResult {
+    SUCCESS,
+    ERROR
+}

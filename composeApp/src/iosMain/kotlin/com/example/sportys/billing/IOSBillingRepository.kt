@@ -10,6 +10,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withTimeoutOrNull
 import platform.StoreKit.SKPayment
 import platform.StoreKit.SKPaymentQueue
 import platform.StoreKit.SKPaymentTransaction
@@ -59,9 +60,30 @@ private class BillingDelegate(
     private val products = mutableMapOf<String, SKProduct>()
     private val continuations = mutableMapOf<String, (PurchaseResult) -> Unit>()
 
+    private var productsRequest: SKProductsRequest? = null
+
     init {
         SKPaymentQueue.defaultQueue().addTransactionObserver(this)
         fetchProducts()
+
+        SKPaymentQueue.defaultQueue().transactions?.forEach { tx ->
+            val transaction = tx as? SKPaymentTransaction ?: return@forEach
+            val id = transaction.payment.productIdentifier ?: return@forEach
+
+            if (
+                transaction.transactionState ==
+                SKPaymentTransactionState.SKPaymentTransactionStatePurchased ||
+                transaction.transactionState ==
+                SKPaymentTransactionState.SKPaymentTransactionStateRestored
+            ) {
+                scope.launch {
+                    when {
+                        id.startsWith("theme_") -> themeRepository.markPurchased(id)
+                        id == "reset_data" -> featureRepository.markPurchased(id)
+                    }
+                }
+            }
+        }
 
         PromotionConnector.onPromotionReceived = { productId ->
             println("🍏 Promotion received → $productId")
@@ -70,27 +92,29 @@ private class BillingDelegate(
     }
 
     private fun fetchProducts() {
-        val request = SKProductsRequest(productIdentifiers = productIds)
-        request.delegate = this
-        request.start()
+        productsRequest = SKProductsRequest(productIdentifiers = productIds)
+        productsRequest?.delegate = this
+        productsRequest?.start()
     }
 
     suspend fun purchase(productId: String): PurchaseResult =
-        suspendCancellableCoroutine { cont ->
+        withTimeoutOrNull(5_000) {
+            suspendCancellableCoroutine { cont ->
 
-            val product = products[productId]
-            if (product == null) {
-                cont.resume(PurchaseResult.Error("Product $productId not found")) {}
-                return@suspendCancellableCoroutine
+                val product = products[productId]
+                if (product == null) {
+                    cont.resume(PurchaseResult.Error("Product $productId not found")) {}
+                    return@suspendCancellableCoroutine
+                }
+
+                continuations[productId] = { result ->
+                    cont.resume(result) {}
+                }
+
+                SKPaymentQueue.defaultQueue()
+                    .addPayment(SKPayment.paymentWithProduct(product))
             }
-
-            continuations[productId] = { result ->
-                cont.resume(result) {}
-            }
-
-            SKPaymentQueue.defaultQueue()
-                .addPayment(SKPayment.paymentWithProduct(product))
-        }
+        } ?: PurchaseResult.Error("Purchase unavailable")
 
     private suspend fun autoPurchaseFromPromotion(productId: String) {
         val p = products[productId] ?: return

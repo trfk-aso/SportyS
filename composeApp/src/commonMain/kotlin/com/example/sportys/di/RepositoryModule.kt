@@ -27,7 +27,7 @@ val repositoryModule = module {
     }}
 
     single(named("NEWS_API_KEY")) { "bfaa2639da53b2b7f671942330dc7c41" }
-    single(named("FOOTBALL_API_KEY")) { "c248e8c2f602e83f9da56759ca225d2a" }
+    single(named("FOOTBALL_API_KEY")) { "bea5938edadb452b8e32ac962cf69574" }
 
     single { FootballDbMapper() }
 
